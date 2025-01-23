@@ -15,71 +15,96 @@ public class OscarL {
 
 
         while (true) {
-            String programInput = scanner.nextLine();
-            String[] inputParts = programInput.split(" ");
-            theInput = inputParts[0];
+            try {
+                String programInput = scanner.nextLine().trim();
+                String[] inputParts = programInput.split(" ", 2); // Split into command and details
+                theInput = inputParts[0]; // Command
 
-            if (theInput.equals("bye")) { // Exit condition
-                System.out.println("Bye. Hope to see you again soon!");
-                System.out.println("____________________________________________________________");
-                break;
-            } else if (theInput.equals("mark")) { // mark whether it is completed
-                int taskIndex = Integer.parseInt(inputParts[1]) - 1;
-                if (taskIndex >= 0 && taskIndex < tasks.size()) {
-                    tasks.get(taskIndex).markAsDone();
-                    System.out.println("____________________________________________________________");
-                    System.out.println("Nice! I've marked this task as done:");
-                    System.out.println(tasks.get(taskIndex));
-                    System.out.println("____________________________________________________________");
+                switch (theInput) {
+                    case "bye": // Exit condition
+                        System.out.println("Bye. Hope to see you again soon!");
+                        System.out.println("____________________________________________________________");
+                        return;
+
+                    case "mark": // Mark task as done
+                        if (inputParts.length < 2) {
+                            throw new OscarLException("Please specify the task number to mark as done.");
+                        }
+                        int markIndex = Integer.parseInt(inputParts[1]) - 1;
+                        if (markIndex >= 0 && markIndex < tasks.size()) {
+                            tasks.get(markIndex).markAsDone();
+                            System.out.println("Nice! I've marked this task as done:");
+                            System.out.println(tasks.get(markIndex));
+                        } else {
+                            throw new OscarLException("Task number is invalid.");
+                        }
+                        break;
+
+                    case "unmark": // Mark task as not done
+                        if (inputParts.length < 2) {
+                            throw new OscarLException("Please specify the task number to unmark.");
+                        }
+                        int unmarkIndex = Integer.parseInt(inputParts[1]) - 1;
+                        if (unmarkIndex >= 0 && unmarkIndex < tasks.size()) {
+                            tasks.get(unmarkIndex).markAsNotDone();
+                            System.out.println("OK, I've marked this task as not done yet:");
+                            System.out.println(tasks.get(unmarkIndex));
+                        } else {
+                            throw new OscarLException("Task number is invalid.");
+                        }
+                        break;
+
+                    case "list": // Display all tasks
+                        System.out.println("Here are the tasks in your list:");
+                        for (int i = 0; i < tasks.size(); i++) {
+                            System.out.println((i + 1) + ". " + tasks.get(i));
+                        }
+                        break;
+
+                    case "todo": // Add a todo task
+                        if (inputParts.length < 2 || inputParts[1].trim().isEmpty()) {
+                            throw new OscarLException("The description of a todo cannot be empty.");
+                        }
+                        Task newTodo = new ToDo(inputParts[1].trim());
+                        tasks.add(newTodo);
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println(newTodo);
+                        break;
+
+                    case "deadline": // Add a deadline task
+                        if (inputParts.length < 2 || !inputParts[1].contains("/by")) {
+                            throw new OscarLException("The deadline format is invalid. Use 'description /by dueDate'.");
+                        }
+                        String[] deadlineDetails = inputParts[1].split(" /by ", 2);
+                        Task newDeadline = new Deadline(deadlineDetails[0].trim(), deadlineDetails[1].trim());
+                        tasks.add(newDeadline);
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println(newDeadline);
+                        break;
+
+                    case "event": // Add an event task
+                        if (inputParts.length < 2 || !inputParts[1].contains("/from") || !inputParts[1].contains("/to")) {
+                            throw new OscarLException("The event format is invalid. Use 'description /from start /to end'.");
+                        }
+                        String[] eventDetails = inputParts[1].split(" /from | /to ");
+                        if (eventDetails.length < 3) {
+                            throw new OscarLException("Event details are incomplete.");
+                        }
+                        Task newEvent = new Event(eventDetails[0].trim(), eventDetails[1].trim(), eventDetails[2].trim());
+                        tasks.add(newEvent);
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println(newEvent);
+                        break;
+
+                    default: // Unrecognized command
+                        throw new OscarLException("I'm sorry, I don't understand that command.");
                 }
-            } else if (theInput.equals("unmark")) { // mark whether it is uncompleted
-                int taskIndex = Integer.parseInt(inputParts[1]) - 1;
-                if (taskIndex >= 0 && taskIndex < tasks.size()) {
-                    tasks.get(taskIndex).markAsNotDone();
-                    System.out.println("____________________________________________________________");
-                    System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println(tasks.get(taskIndex));
-                    System.out.println("____________________________________________________________");
-                }
-            } else if (theInput.equals("list")) { // Display all tasks
-                System.out.println("____________________________________________________________");
-                System.out.println("Here are the tasks in your list:");
-                for (int i = 0; i < tasks.size(); i++) {
-                    System.out.println((i + 1) + ". " + tasks.get(i));
-                }
-                System.out.println("____________________________________________________________");
-            } else if (theInput.equals("todo")) {
-                String[] details = programInput.split("todo");
-                Task newTask = new ToDo(details[1]);
-                tasks.add(newTask);
-                System.out.println("Got it. I've added this task:");
-                System.out.println(newTask);
-                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                System.out.println("____________________________________________________________");
-            } else if (theInput.equals("deadline")) {
-                String[] details = programInput.split("deadline | /by ");
-                Task newTask = new Deadline(details[1], details[2]);
-                tasks.add(newTask);
-                System.out.println("____________________________________________________________");
-                System.out.println("Got it. I've added this task:");
-                System.out.println(newTask);
-                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                System.out.println("____________________________________________________________");
-            } else if (theInput.equals("event")) {
-                System.out.println("____________________________________________________________");
-                String[] details = programInput.split("event | /from | /to ");
-                Task newTask = new Event(details[1], details[2], details[3]);
-                tasks.add(newTask);
-                System.out.println("Got it. I've added this task:");
-                System.out.println(newTask);
-                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-                System.out.println("____________________________________________________________");
-            } else {
-                System.out.println("I'm sorry, I don't understand that command.");
+            } catch (OscarLException e) {
+                System.out.println("OOPS!!! " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("OOPS!!! An unexpected error occurred: " + e.getMessage());
             }
+            System.out.println("____________________________________________________________");
         }
-
-        scanner.close();
-
     }
 }
