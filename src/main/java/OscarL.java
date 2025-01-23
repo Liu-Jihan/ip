@@ -48,11 +48,34 @@ public class OscarL {
                     System.out.println((i + 1) + ". " + tasks.get(i));
                 }
                 System.out.println("____________________________________________________________");
+            } else if (theInput.equals("todo")) {
+                String[] details = programInput.split("todo");
+                Task newTask = new ToDo(details[1]);
+                tasks.add(newTask);
+                System.out.println("Got it. I've added this task:");
+                System.out.println(newTask);
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                System.out.println("____________________________________________________________");
+            } else if (theInput.equals("deadline")) {
+                String[] details = programInput.split("deadline | /by ");
+                Task newTask = new Deadline(details[1], details[2]);
+                tasks.add(newTask);
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(newTask);
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                System.out.println("____________________________________________________________");
+            } else if (theInput.equals("event")) {
+                System.out.println("____________________________________________________________");
+                String[] details = programInput.split("event | /from | /to ");
+                Task newTask = new Event(details[1], details[2], details[3]);
+                tasks.add(newTask);
+                System.out.println("Got it. I've added this task:");
+                System.out.println(newTask);
+                System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                System.out.println("____________________________________________________________");
             } else {
-                tasks.add(new Task(programInput ));
-                System.out.println("____________________________________________________________");
-                System.out.println("added: " + programInput );
-                System.out.println("____________________________________________________________");
+                System.out.println("I'm sorry, I don't understand that command.");
             }
         }
 
