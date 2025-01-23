@@ -69,6 +69,7 @@ public class OscarL {
                         tasks.add(newTodo);
                         System.out.println("Got it. I've added this task:");
                         System.out.println(newTodo);
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                         break;
 
                     case "deadline": // Add a deadline task
@@ -80,6 +81,7 @@ public class OscarL {
                         tasks.add(newDeadline);
                         System.out.println("Got it. I've added this task:");
                         System.out.println(newDeadline);
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                         break;
 
                     case "event": // Add an event task
@@ -94,6 +96,22 @@ public class OscarL {
                         tasks.add(newEvent);
                         System.out.println("Got it. I've added this task:");
                         System.out.println(newEvent);
+                        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                        break;
+
+                    case "delete": // Remove a task
+                        if (inputParts.length < 2) {
+                            throw new OscarLException("Please specify the task number to delete.");
+                        }
+                        int deleteIndex = Integer.parseInt(inputParts[1]) - 1;
+                        if (deleteIndex >= 0 && deleteIndex < tasks.size()) {
+                            Task removedTask = tasks.remove(deleteIndex); // Remove the task
+                            System.out.println("Noted. I've removed this task:");
+                            System.out.println(removedTask);
+                            System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                        } else {
+                            throw new OscarLException("Task number is invalid.");
+                        }
                         break;
 
                     default: // Unrecognized command
