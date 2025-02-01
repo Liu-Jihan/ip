@@ -1,13 +1,18 @@
 public class Deadline extends Task {
-    private String ddl;
+    protected String by;
 
     public Deadline(String description, String by) {
         super(description);
-        this.ddl = by;
+        this.by = by;
+    }
+
+    @Override
+    public String toFileFormat() {
+        return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + by;
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + ddl + ")";
+        return "[D]" + super.toString() + " (by: " + by + ")";
     }
 }
