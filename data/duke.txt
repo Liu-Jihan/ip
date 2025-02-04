@@ -1,2 +1,2 @@
-D | 0 | return book | Sunday
-E | 0 | project meeting | Mon 2pm | 4pm
+D | 0 | return book | 2/12/2019 1800
+E | 0 | project meeting | 6 Aug 2025, 2:00pm | 6 Aug 2025, 4:00pm
