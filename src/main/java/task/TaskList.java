@@ -1,4 +1,7 @@
+package task;
+
 import java.util.ArrayList;
+import oscarl.OscarLException;
 
 public class TaskList {
     private ArrayList<Task> tasks;

@@ -1,4 +1,4 @@
-# OscarL User Guide
+# oscarl.oscarl User Guide
 
 // Update the title above to match the actual product name
 
