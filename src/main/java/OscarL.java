@@ -1,5 +1,10 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class OscarL {
@@ -78,7 +83,7 @@ public class OscarL {
 
                 case "deadline": // Add a deadline task
                     if (inputParts.length < 2 || !inputParts[1].contains("/by")) {
-                        throw new OscarLException("The deadline format is invalid. Use 'description /by dueDate'.");
+                        throw new OscarLException("The deadline format is invalid. Use 'description /by dueDate(ex /by 2/12/2019 1800)'.");
                     }
                     String[] deadlineDetails = inputParts[1].split(" /by ", 2);
                     Task newDeadline = new Deadline(deadlineDetails[0].trim(), deadlineDetails[1].trim());
