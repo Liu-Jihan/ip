@@ -64,5 +64,13 @@ public class Task {
                 throw new IllegalArgumentException("Unknown task type in file.");
         }
     }
+    /**
+     * Retrieves the description of the task.
+     *
+     * @return The task description.
+     */
+    public String getDescription() {
+        return description;
+    }
 
 }
