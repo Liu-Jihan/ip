@@ -5,12 +5,14 @@ import task.Task;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Handles the loading and saving of tasks to a persistent storage file.
  */
 public class Storage {
     private final String filePath;
+    private static final Logger logger = Logger.getLogger(Storage.class.getName());
 
     /**
      * Constructs a Storage object with the specified file path.

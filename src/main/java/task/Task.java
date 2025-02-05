@@ -8,6 +8,7 @@ public class Task {
     protected boolean isDone;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /**
      * Constructs a new Task with the given description.
      *
@@ -15,6 +16,13 @@ public class Task {
      */
 =======
 >>>>>>> parent of 30ef9ca (All classes: Modify to follow java coding standard)
+=======
+    private static final String TODO_TYPE = "T";
+    private static final String DEADLINE_TYPE = "D";
+    private static final String EVENT_TYPE = "E";
+
+
+>>>>>>> branch-A-CodingStandard
     public Task(String description) {
         this.description = description;
         this.isDone = false; // Default is not done
@@ -73,12 +81,12 @@ public class Task {
         String description = parts[2];
 
         switch (type) {
-            case "T":
+            case TODO_TYPE:
                 ToDo todo = new ToDo(description);
                 if (isDone) todo.markAsDone();
                 return todo;
 
-            case "D":
+            case DEADLINE_TYPE:
                 if (parts.length < 4) {
                     throw new IllegalArgumentException("Invalid deadline format in file.");
                 }
@@ -86,7 +94,7 @@ public class Task {
                 if (isDone) deadline.markAsDone();
                 return deadline;
 
-            case "E":
+            case EVENT_TYPE:
                 if (parts.length < 5) {
                     throw new IllegalArgumentException("Invalid event format in file.");
                 }
