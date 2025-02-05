@@ -7,11 +7,14 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+<<<<<<< HEAD
     /**
      * Constructs a new Task with the given description.
      *
      * @param description The description of the task.
      */
+=======
+>>>>>>> parent of 30ef9ca (All classes: Modify to follow java coding standard)
     public Task(String description) {
         this.description = description;
         this.isDone = false; // Default is not done

@@ -8,11 +8,15 @@ import oscarl.OscarLException;
  */
 public class TaskList {
     private ArrayList<Task> tasks;
+<<<<<<< HEAD
     /**
      * Constructs a TaskList with an existing list of tasks.
      *
      * @param tasks The initial list of tasks.
      */
+=======
+
+>>>>>>> parent of 30ef9ca (All classes: Modify to follow java coding standard)
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
