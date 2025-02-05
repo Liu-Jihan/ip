@@ -9,23 +9,52 @@ import storage.Storage;
 import ui.Ui;
 import oscarl.OscarLException;
 
+/**
+ * Represents a command that can be executed within the application.
+ */
+
 public class Command {
     private final Runnable action;
     private final boolean isExit;
 
+    /**
+     * Constructs a Command with a specific action and exit status.
+     *
+     * @param action The action to be executed when the command runs.
+     * @param isExit Whether this command causes the program to exit.
+     */
     public Command(Runnable action, boolean isExit) {
         this.action = action;
         this.isExit = isExit;
     }
 
+    /**
+     * Executes the command by running the associated action.
+     */
     public void execute() {
         action.run();
     }
 
+
+    /**
+     * Checks if this command should terminate the program.
+     *
+     * @return true if this command exits the program, false otherwise.
+     */
     public boolean isExit() {
         return isExit;
     }
 
+    /**
+     * Parses a user input string and returns the corresponding Command.
+     *
+     * @param input The user input string.
+     * @param tasks The TaskList containing the current tasks.
+     * @param ui The UI component for displaying messages.
+     * @param storage The Storage component for saving task data.
+     * @return The parsed Command object.
+     * @throws OscarLException If the input command is invalid.
+     */
     public static Command parse(String input, TaskList tasks, Ui ui, Storage storage) throws OscarLException {
         String[] parts = input.split(" ", 2);
         String command = parts[0];

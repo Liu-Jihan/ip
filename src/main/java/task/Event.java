@@ -6,9 +6,20 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Represents an event task with a start and end time.
+ */
 public class Event extends Task {
     private LocalDateTime fromDateTime;
     private LocalDateTime toDateTime;
+
+    /**
+     * Constructs an Event task with a description, start time, and end time.
+     *
+     * @param description The description of the event.
+     * @param from The starting time of the event.
+     * @param to The ending time of the event.
+     */
 
     public Event(String description, String from, String to) {
         super(description);
@@ -18,7 +29,11 @@ public class Event extends Task {
 
     /**
      * Parses a date-time string like "Aug 6th 2pm".
+     *
+     * @param dateTimeStr The date-time string to parse.
+     * @return The parsed LocalDateTime object, or null if parsing fails.
      */
+
     private LocalDateTime parseDateTime(String dateTimeStr) {
         // Remove ordinal suffixes (st, nd, rd, th)
         dateTimeStr = dateTimeStr.replaceAll("(\\d+)(st|nd|rd|th)", "$1");
@@ -52,8 +67,13 @@ public class Event extends Task {
     }
 
     /**
-     * Parses an end time like "4pm" and assumes the same date as `fromDateTime`.
+     * Parses an end time and assumes the same date as the start time.
+     *
+     * @param endTimeStr The end time string.
+     * @param fromDateTime The parsed start time.
+     * @return The parsed end time as LocalDateTime.
      */
+
     private LocalDateTime parseEndTime(String endTimeStr, LocalDateTime fromDateTime) {
         if (fromDateTime == null) return null; // Cannot parse end time without start time
         if (endTimeStr.matches("\\d{1,2}(am|pm)")) { // Only time is given
@@ -63,7 +83,10 @@ public class Event extends Task {
     }
 
     /**
-     * Converts "2pm" to 14 (24-hour format).
+     * Parses a date-time string like "Aug 6th 2pm".
+     *
+     * @param dateTimeStr The date-time string to parse.
+     * @return The parsed LocalDateTime object, or null if parsing fails.
      */
     private int parseTimeTo24Hour(String timeStr) {
         int hour = Integer.parseInt(timeStr.replaceAll("[^0-9]", ""));
@@ -72,6 +95,11 @@ public class Event extends Task {
         return hour;
     }
 
+    /**
+     * Converts the event task to a file-friendly format.
+     *
+     * @return A string representation formatted for file storage.
+     */
     @Override
     public String toFileFormat() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d MMM yyyy, h:mma");
@@ -80,6 +108,11 @@ public class Event extends Task {
                 (toDateTime != null ? toDateTime.format(dateTimeFormatter) : "Invalid DateTime");
     }
 
+    /**
+     * Returns a string representation of the event task.
+     *
+     * @return A formatted string showing task details, start time, and end time.
+     */
     @Override
     public String toString() {
         DateTimeFormatter displayFormat = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma");

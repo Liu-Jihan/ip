@@ -1,32 +1,63 @@
 package task;
 
+/**
+ * Represents a generic task with a description and completion status.
+ */
 public class Task {
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Constructs a new Task with the given description.
+     *
+     * @param description The description of the task.
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false; // Default is not done
     }
 
-    // Mark as done
+    /**
+     * Marks the task as done.
+     */
     public void markAsDone() {
         this.isDone = true;
     }
 
-    // Mark as not done
+    /**
+     * Marks the task as not done.
+     */
     public void markAsNotDone() {
         this.isDone = false;
     }
+
+    /**
+     * Returns a string representation of the task.
+     *
+     * @return A formatted string indicating the completion status and description.
+     */
 
     @Override
     public String toString() {
         return (isDone ? "[X] " : "[ ] ") + description;
     }
+
+    /**
+     * Converts the task to a file-friendly format.
+     *
+     * @return A string representation formatted for file storage.
+     */
     public String toFileFormat() {
         return (isDone ? "1" : "0") + " | " + description;
     }
 
+    /**
+     * Parses a task from its file format representation.
+     *
+     * @param line The line from the file representing a task.
+     * @return The parsed Task object.
+     * @throws IllegalArgumentException If the format is invalid.
+     */
     public static Task fromFileFormat(String line) {
         String[] parts = line.split(" \\| ");
 

@@ -6,15 +6,26 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles the loading and saving of tasks to a persistent storage file.
+ */
 public class Storage {
     private final String filePath;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath The file path where tasks are stored.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
         ensureFileExists(); // Ensures the file and directory exist at initialization
     }
 
-    // Ensures the file and directory exist
+    /**
+     * Ensures that the storage file and its directory exist.
+     */
+
     private void ensureFileExists() {
         File file = new File(filePath);
         try {
@@ -27,7 +38,12 @@ public class Storage {
         }
     }
 
-    // Loads tasks from the file
+    /**
+     * Loads tasks from the storage file.
+     *
+     * @return A list of tasks loaded from the file.
+     */
+
     public List<Task> loadTasks() {
         List<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -49,7 +65,11 @@ public class Storage {
         return tasks;
     }
 
-    // Saves tasks to the file
+    /**
+     * Saves the provided list of tasks to the storage file.
+     *
+     * @param tasks The list of tasks to be saved.
+     */
     public void saveTasks(List<Task> tasks) {
         File file = new File(filePath);
         file.getParentFile().mkdirs(); // Ensure the directory exists
@@ -65,7 +85,9 @@ public class Storage {
         }
     }
 
-    // Deletes all stored tasks (for reset)
+    /**
+     * Deletes all stored tasks by removing the storage file.
+     */
     public void clearTasks() {
         File file = new File(filePath);
         if (file.exists()) {
