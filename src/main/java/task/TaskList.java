@@ -7,20 +7,15 @@ import oscarl.OscarLException;
  * Represents a list of tasks and provides methods to manage them.
  */
 public class TaskList {
-<<<<<<< HEAD
-    private ArrayList<Task> tasks;
-<<<<<<< HEAD
+
     /**
      * Constructs a TaskList with an existing list of tasks.
      *
      * @param tasks The initial list of tasks.
      */
-=======
-=======
-    private final ArrayList<Task> tasks;
->>>>>>> branch-A-CodingStandard
 
->>>>>>> parent of 30ef9ca (All classes: Modify to follow java coding standard)
+    private final ArrayList<Task> tasks;
+
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
