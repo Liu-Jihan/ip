@@ -5,9 +5,11 @@ import task.Task;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Storage {
     private final String filePath;
+    private static final Logger logger = Logger.getLogger(Storage.class.getName());
 
     public Storage(String filePath) {
         this.filePath = filePath;

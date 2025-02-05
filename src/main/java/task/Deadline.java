@@ -21,8 +21,7 @@ public class Deadline extends Task {
         try {
             return LocalDateTime.parse(by, formatter);
         } catch (DateTimeParseException e) {
-            System.out.println("Invalid date-time format! Use: d/M/yyyy HHmm (e.g., 2/12/2019 1800)");
-            return null; // Return null if parsing fails
+            throw new IllegalArgumentException("Invalid date format. Expected: d/M/yyyy HHmm");
         }
     }
 

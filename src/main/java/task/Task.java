@@ -4,6 +4,11 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+    private static final String TODO_TYPE = "T";
+    private static final String DEADLINE_TYPE = "D";
+    private static final String EVENT_TYPE = "E";
+
+
     public Task(String description) {
         this.description = description;
         this.isDone = false; // Default is not done
@@ -39,12 +44,12 @@ public class Task {
         String description = parts[2];
 
         switch (type) {
-            case "T":
+            case TODO_TYPE:
                 ToDo todo = new ToDo(description);
                 if (isDone) todo.markAsDone();
                 return todo;
 
-            case "D":
+            case DEADLINE_TYPE:
                 if (parts.length < 4) {
                     throw new IllegalArgumentException("Invalid deadline format in file.");
                 }
@@ -52,7 +57,7 @@ public class Task {
                 if (isDone) deadline.markAsDone();
                 return deadline;
 
-            case "E":
+            case EVENT_TYPE:
                 if (parts.length < 5) {
                     throw new IllegalArgumentException("Invalid event format in file.");
                 }
