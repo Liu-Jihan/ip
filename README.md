@@ -26,6 +26,7 @@ public class Main {
         Application.launch(MainApp.class, args);
     }
 }
+
 📝 To-Do List for the Future
  Implement core task management
  Add support for recurring tasks 🔄
