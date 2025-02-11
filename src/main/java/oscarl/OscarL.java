@@ -24,38 +24,44 @@ public class OscarL {
     public OscarL(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
-        this.tasks = new TaskList(new ArrayList<>(storage.loadTasks())); // Explicit conversion
+        this.tasks = new TaskList(new ArrayList<>(storage.loadTasks())); // ✅ Correctly loads tasks from file
     }
 
     /**
-     * Runs the main loop of the application, processing user commands until the user exits.
+     * Getter for UI.
      */
-    public void run() {
-        ui.showWelcome();
-        boolean isExit = false;
+    public Ui getUi() {
+        return ui;
+    }
 
-        while (!isExit) {
-            try {
-                ui.showLine();
-                String fullCommand = ui.readCommand();
-                ui.showLine();
+    /**
+     * Getter for TaskList.
+     */
+    public TaskList getTasks() {
+        return tasks;
+    }
 
-                Command command = Command.parse(fullCommand, tasks, ui, storage);
-                command.execute();
-                isExit = command.isExit();
-            } catch (OscarLException e) {
-                ui.showError(e.getMessage());
-            }
+    /**
+     * Getter for Storage.
+     */
+    public Storage getStorage() {
+        return storage;
+    }
+
+    /**
+     * Processes user input and returns a response string.
+     *
+     * @param input The user command.
+     * @return The response string to be displayed in the GUI.
+     */
+    public String getResponse(String input) {
+        try {
+            Command command = Command.parse(input, tasks, ui, storage);
+            return command.execute(); // ✅ Returns response instead of printing
+        } catch (OscarLException e) {
+            return "Error: " + e.getMessage();
         }
     }
 
-    /**
-     * The main entry point of the application.
-     * Initializes the program and starts execution.
-     *
-     * @param args Command line arguments.
-     */
-    public static void main(String[] args) {
-        new OscarL("data/tasks.txt").run();
-    }
 }
+

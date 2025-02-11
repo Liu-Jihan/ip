@@ -9,29 +9,31 @@ import task.TaskList;
 import task.ToDo;
 import ui.Ui;
 
+import java.util.function.Supplier;
+
 /**
  * Represents a command that can be executed within the application.
  */
 public class Command {
-    private final Runnable action;
+    private final Supplier<String> action;
     private final boolean isExit;
 
     /**
      * Constructs a Command with a specific action and exit status.
      *
-     * @param action The action to be executed when the command runs.
+     * @param action The function that returns a response when the command runs.
      * @param isExit Whether this command causes the program to exit.
      */
-    public Command(Runnable action, boolean isExit) {
+    public Command(Supplier<String> action, boolean isExit) {
         this.action = action;
         this.isExit = isExit;
     }
 
     /**
-     * Executes the command by running the associated action.
+     * Executes the command and returns the response string.
      */
-    public void execute() {
-        action.run();
+    public String execute() {
+        return action.get(); // ✅ Returns a response instead of printing to terminal
     }
 
     /**
@@ -45,13 +47,6 @@ public class Command {
 
     /**
      * Parses a user input string and returns the corresponding Command.
-     *
-     * @param input The user input string.
-     * @param tasks The TaskList containing the current tasks.
-     * @param ui The UI component for displaying messages.
-     * @param storage The Storage component for saving task data.
-     * @return The parsed Command object.
-     * @throws OscarLException If the input command is invalid.
      */
     public static Command parse(String input, TaskList tasks, Ui ui, Storage storage) throws OscarLException {
         String[] parts = input.split(" ", 2);
@@ -59,110 +54,78 @@ public class Command {
 
         switch (command) {
             case "bye":
-                return new Command(() -> ui.showMessage("Bye. Hope to see you again soon!"), true);
+                return new Command(() -> "Bye. Hope to see you again soon!", true);
 
             case "list":
-                return new Command(() -> {
-                    ui.showMessage("Here are your tasks:");
-                    tasks.listTasks();
-                }, false);
+                return new Command(() -> "Here are your tasks:\n" + tasks.listTasks(), false);
 
             case "mark":
                 return new Command(() -> {
+                    if (parts.length < 2) return "Task number is required for 'mark' command.";
                     try {
-                        if (parts.length < 2) {
-                            throw new OscarLException("Task number is required for 'mark' command.");
-                        }
                         int index = Integer.parseInt(parts[1]) - 1;
                         Task task = tasks.markTask(index, true);
-                        ui.showMessage("Task marked as done: " + task);
-                        storage.saveTasks(tasks.getTasks());
-                    } catch (NumberFormatException e) {
-                        ui.showError("Invalid task number format.");
+                        storage.saveTasks(tasks.getTasks()); // ✅ Ensures tasks save properly
+                        return "Task marked as done: " + task;
                     } catch (Exception e) {
-                        ui.showError(e.getMessage());
+                        return "Error: " + e.getMessage();
                     }
                 }, false);
 
             case "unmark":
                 return new Command(() -> {
+                    if (parts.length < 2) return "Task number is required for 'unmark' command.";
                     try {
-                        if (parts.length < 2) {
-                            throw new OscarLException("Task number is required for 'unmark' command.");
-                        }
                         int index = Integer.parseInt(parts[1]) - 1;
                         Task task = tasks.markTask(index, false);
-                        ui.showMessage("Task marked as not done: " + task);
                         storage.saveTasks(tasks.getTasks());
-                    } catch (NumberFormatException e) {
-                        ui.showError("Invalid task number format.");
+                        return "Task marked as not done: " + task;
                     } catch (Exception e) {
-                        ui.showError(e.getMessage());
+                        return "Error: " + e.getMessage();
                     }
                 }, false);
 
             case "delete":
                 return new Command(() -> {
+                    if (parts.length < 2) return "Task number is required for 'delete' command.";
                     try {
-                        if (parts.length < 2) {
-                            throw new OscarLException("Task number is required for 'delete' command.");
-                        }
                         int index = Integer.parseInt(parts[1]) - 1;
                         Task removed = tasks.removeTask(index);
-                        ui.showMessage("Removed: " + removed);
                         storage.saveTasks(tasks.getTasks());
-                    } catch (NumberFormatException e) {
-                        ui.showError("Invalid task number format.");
+                        return "Removed: " + removed;
                     } catch (Exception e) {
-                        ui.showError(e.getMessage());
+                        return "Error: " + e.getMessage();
                     }
                 }, false);
 
             case "todo":
                 return new Command(() -> {
-                    try {
-                        if (parts.length < 2) {
-                            throw new OscarLException("Description is required for 'todo' command.");
-                        }
-                        Task task = new ToDo(parts[1]);
-                        tasks.addTask(task);
-                        ui.showMessage("Added: " + task);
-                        storage.saveTasks(tasks.getTasks());
-                    } catch (Exception e) {
-                        ui.showError("Invalid ToDo format.");
-                    }
+                    if (parts.length < 2) return "Description is required for 'todo' command.";
+                    Task task = new ToDo(parts[1]);
+                    tasks.addTask(task);
+                    storage.saveTasks(tasks.getTasks());
+                    return "Added: " + task;
                 }, false);
 
             case "deadline":
                 return new Command(() -> {
-                    try {
-                        if (parts.length < 2 || !parts[1].contains("/by")) {
-                            throw new OscarLException("Use 'deadline description /by dueDate'.");
-                        }
-                        String[] deadlineParts = parts[1].split(" /by ", 2);
-                        Task task = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
-                        tasks.addTask(task);
-                        ui.showMessage("Added: " + task);
-                        storage.saveTasks(tasks.getTasks());
-                    } catch (Exception e) {
-                        ui.showError("Invalid Deadline format.");
-                    }
+                    if (parts.length < 2 || !parts[1].contains("/by")) return "Use 'deadline description /by dueDate'.";
+                    String[] deadlineParts = parts[1].split(" /by ", 2);
+                    Task task = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
+                    tasks.addTask(task);
+                    storage.saveTasks(tasks.getTasks());
+                    return "Added: " + task;
                 }, false);
 
             case "event":
                 return new Command(() -> {
-                    try {
-                        if (parts.length < 2 || !parts[1].contains("/from") || !parts[1].contains("/to")) {
-                            throw new OscarLException("Use 'event description /from start /to end'.");
-                        }
-                        String[] eventParts = parts[1].split(" /from | /to ", 3);
-                        Task task = new Event(eventParts[0].trim(), eventParts[1].trim(), eventParts[2].trim());
-                        tasks.addTask(task);
-                        ui.showMessage("Added: " + task);
-                        storage.saveTasks(tasks.getTasks());
-                    } catch (Exception e) {
-                        ui.showError("Invalid Event format.");
-                    }
+                    if (parts.length < 2 || !parts[1].contains("/from") || !parts[1].contains("/to"))
+                        return "Use 'event description /from start /to end'.";
+                    String[] eventParts = parts[1].split(" /from | /to ", 3);
+                    Task task = new Event(eventParts[0].trim(), eventParts[1].trim(), eventParts[2].trim());
+                    tasks.addTask(task);
+                    storage.saveTasks(tasks.getTasks());
+                    return "Added: " + task;
                 }, false);
 
             default:

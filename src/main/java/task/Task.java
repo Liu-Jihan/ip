@@ -7,16 +7,15 @@ public class Task {
     protected String description;
     protected boolean isDone;
 
+    private static final String TODO_TYPE = "T";
+    private static final String DEADLINE_TYPE = "D";
+    private static final String EVENT_TYPE = "E";
+
     /**
      * Constructs a new Task with the given description.
      *
      * @param description The description of the task.
      */
-
-    private static final String TODO_TYPE = "T";
-    private static final String DEADLINE_TYPE = "D";
-    private static final String EVENT_TYPE = "E";
-
     public Task(String description) {
         this.description = description;
         this.isDone = false; // Default is not done
@@ -41,19 +40,27 @@ public class Task {
      *
      * @return A formatted string indicating the completion status and description.
      */
-
     @Override
     public String toString() {
-        return (isDone ? "[X] " : "[ ] ") + description;
+        return "[" + getTypeSymbol() + "]" + (isDone ? "[X] " : "[ ] ") + description;
     }
 
     /**
-     * Converts the task to a file-friendly format.
+     * Converts the task to a file-friendly format, ensuring type information is included.
      *
      * @return A string representation formatted for file storage.
      */
     public String toFileFormat() {
-        return (isDone ? "1" : "0") + " | " + description;
+        return getTypeSymbol() + " | " + (isDone ? "1" : "0") + " | " + description;
+    }
+
+    /**
+     * Determines the type symbol for the task.
+     *
+     * @return A string representing the task type ("T", "D", or "E").
+     */
+    protected String getTypeSymbol() {
+        return "T"; // Default for generic tasks (should be overridden)
     }
 
     /**
@@ -70,7 +77,7 @@ public class Task {
             throw new IllegalArgumentException("Invalid task format in file.");
         }
 
-        String type = parts[0];
+        String type = parts[0]; // Fix: Correctly extracting the type symbol
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
 
@@ -100,6 +107,7 @@ public class Task {
                 throw new IllegalArgumentException("Unknown task type in file.");
         }
     }
+
     /**
      * Retrieves the description of the task.
      *
@@ -108,5 +116,4 @@ public class Task {
     public String getDescription() {
         return description;
     }
-
 }

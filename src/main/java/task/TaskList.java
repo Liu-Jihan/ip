@@ -7,18 +7,17 @@ import oscarl.OscarLException;
  * Represents a list of tasks and provides methods to manage them.
  */
 public class TaskList {
+    private final ArrayList<Task> tasks;
 
     /**
      * Constructs a TaskList with an existing list of tasks.
      *
      * @param tasks The initial list of tasks.
      */
-
-    private final ArrayList<Task> tasks;
-
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
+
     /**
      * Constructs an empty TaskList.
      */
@@ -71,15 +70,19 @@ public class TaskList {
     }
 
     /**
-     * Lists all tasks in the task list.
+     * Returns all tasks as a formatted string instead of printing.
+     *
+     * @return A formatted string listing all tasks.
      */
-    public void listTasks() {
+    public String listTasks() {
         if (tasks.isEmpty()) {
-            System.out.println("No tasks available.");
+            return "No tasks available.";
         } else {
+            StringBuilder result = new StringBuilder("\n");
             for (int i = 0; i < tasks.size(); i++) {
-                System.out.println((i + 1) + ". " + tasks.get(i));
+                result.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
             }
+            return result.toString().trim(); // ✅ Return instead of printing
         }
     }
 
@@ -88,7 +91,6 @@ public class TaskList {
      *
      * @return The size of the task list.
      */
-
     public int size() {
         return tasks.size();
     }
@@ -98,36 +100,34 @@ public class TaskList {
      *
      * @return The list of tasks.
      */
-
     public ArrayList<Task> getTasks() {
         return tasks;
     }
 
     /**
-     * Finds and displays tasks that contain the specified keyword.
+     * Searches for tasks containing the keyword and returns them as a formatted string.
      *
      * @param keyword The keyword to search for in task descriptions.
+     * @return A formatted string with matching tasks.
      */
-    public void findTasks(String keyword) {
-        System.out.println("____________________________________________________________");
-        System.out.println(" Here are the matching tasks in your list:");
+    public String findTasks(String keyword) {
+        StringBuilder result = new StringBuilder("Here are the matching tasks in your list:\n");
 
-        keyword = keyword.toLowerCase().trim(); // Case-insensitive search with trimming
+        keyword = keyword.toLowerCase().trim();
         int count = 0;
 
         for (int i = 0; i < tasks.size(); i++) {
             Task task = tasks.get(i);
             if (task.getDescription().toLowerCase().contains(keyword)) {
-                System.out.println((count + 1) + ". " + task);
+                result.append((count + 1)).append(". ").append(task).append("\n");
                 count++;
             }
         }
 
         if (count == 0) {
-            System.out.println(" No matching tasks found.");
+            return "No matching tasks found.";
         }
 
-        System.out.println("____________________________________________________________");
+        return result.toString().trim();
     }
-
 }
