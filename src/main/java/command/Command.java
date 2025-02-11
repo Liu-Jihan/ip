@@ -1,18 +1,17 @@
 package command;
 
-import task.TaskList;
-import task.ToDo;
+import oscarl.OscarLException;
+import storage.Storage;
 import task.Deadline;
 import task.Event;
-import task.Task;  // Import Task
-import storage.Storage;
+import task.Task;
+import task.TaskList;
+import task.ToDo;
 import ui.Ui;
-import oscarl.OscarLException;
 
 /**
  * Represents a command that can be executed within the application.
  */
-
 public class Command {
     private final Runnable action;
     private final boolean isExit;
@@ -34,7 +33,6 @@ public class Command {
     public void execute() {
         action.run();
     }
-
 
     /**
      * Checks if this command should terminate the program.

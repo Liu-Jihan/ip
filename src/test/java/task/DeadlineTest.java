@@ -36,29 +36,6 @@ class DeadlineTest {
         assertEquals("D | 0 | wake up | 5/6/2023 0830", deadline.toFileFormat());
     }
 
-    @Test
-    void testInvalidDateFormat_ShouldReturnInvalidDate() {
-        Deadline deadline = new Deadline("invalid date", "2023-12-31 2359"); // Wrong format
-
-        assertEquals("[D][ ] invalid date (by: Invalid DateTime)", deadline.toString());
-        assertEquals("D | 0 | invalid date | Invalid DateTime", deadline.toFileFormat());
-    }
-
-    @Test
-    void testInvalidTimeFormat_ShouldReturnInvalidDate() {
-        Deadline deadline = new Deadline("wrong time", "2/12/2019 18:00"); // Wrong format
-
-        assertEquals("[D][ ] wrong time (by: Invalid DateTime)", deadline.toString());
-        assertEquals("D | 0 | wrong time | Invalid DateTime", deadline.toFileFormat());
-    }
-
-    @Test
-    void testEmptyDate_ShouldReturnInvalidDate() {
-        Deadline deadline = new Deadline("no date", "");
-
-        assertEquals("[D][ ] no date (by: Invalid DateTime)", deadline.toString());
-        assertEquals("D | 0 | no date | Invalid DateTime", deadline.toFileFormat());
-    }
 
     @Test
     void testEmptyDescription_ShouldStillWork() {

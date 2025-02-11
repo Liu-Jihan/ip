@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
  */
 public class Deadline extends Task {
     protected LocalDateTime by;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
 
     /**
      * Constructs a Deadline task with a description and due date.
@@ -25,15 +26,20 @@ public class Deadline extends Task {
      * Parses a date-time string in "d/M/yyyy HHmm" format.
      *
      * @param by The string representing the date and time.
-     * @return A LocalDateTime object or null if parsing fails.
+     * @return A LocalDateTime object.
+     * @throws IllegalArgumentException if the date format is invalid.
      */
-    private LocalDateTime parseDateTime(String by) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+    private static LocalDateTime parseDateTime(String by) {
+        if (!by.matches("\\d{1,2}/\\d{1,2}/\\d{4} \\d{4}")) {
+            throw new IllegalArgumentException("Invalid date format: \"" + by +
+                    "\". Expected format: d/M/yyyy HHmm (e.g., 5/2/2025 1830)");
+        }
 
         try {
-            return LocalDateTime.parse(by, formatter);
+            return LocalDateTime.parse(by, FORMATTER);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date format. Expected: d/M/yyyy HHmm");
+            throw new IllegalArgumentException("Invalid date-time value: \"" + by +
+                    "\". Please enter a valid date in the format d/M/yyyy HHmm.", e);
         }
     }
 
