@@ -42,7 +42,9 @@ public class TaskList {
      * @throws OscarLException If the index is invalid.
      */
     public Task removeTask(int index) throws OscarLException {
-        assert index >= 0 && index < tasks.size() : "Index out of bounds";
+        if (index < 0 || index >= tasks.size()) {
+            throw new OscarLException("Invalid task number.");
+        }
         return tasks.remove(index);
     }
 
