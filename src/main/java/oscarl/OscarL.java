@@ -24,7 +24,8 @@ public class OscarL {
     public OscarL(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
-        this.tasks = new TaskList(new ArrayList<>(storage.loadTasks())); // ✅ Correctly loads tasks from file
+        this.tasks = new TaskList(new ArrayList<>(storage.loadTasks()));
+        assert tasks != null : "Task list should not be null";
     }
 
     /**

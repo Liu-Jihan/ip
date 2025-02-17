@@ -25,16 +25,20 @@ public class Command {
      * @param isExit Whether this command causes the program to exit.
      */
     public Command(Supplier<String> action, boolean isExit) {
+        assert action != null : "Action cannot be null";
         this.action = action;
         this.isExit = isExit;
     }
+
 
     /**
      * Executes the command and returns the response string.
      */
     public String execute() {
-        return action.get(); // ✅ Returns a response instead of printing to terminal
+        assert action != null : "Action should not be null";
+        return action.get();
     }
+
 
     /**
      * Checks if this command should terminate the program.
@@ -49,7 +53,12 @@ public class Command {
      * Parses a user input string and returns the corresponding Command.
      */
     public static Command parse(String input, TaskList tasks, Ui ui, Storage storage) throws OscarLException {
+        assert input != null : "Input cannot be null";
+        assert !input.trim().isEmpty() : "Input cannot be empty";
+
         String[] parts = input.split(" ", 2);
+        assert parts.length > 0 : "Command should not be empty after splitting";
+
         String command = parts[0];
 
         switch (command) {
@@ -64,8 +73,9 @@ public class Command {
                     if (parts.length < 2) return "Task number is required for 'mark' command.";
                     try {
                         int index = Integer.parseInt(parts[1]) - 1;
+                        assert index >= 0 && index < tasks.size() : "Invalid task index";
                         Task task = tasks.markTask(index, true);
-                        storage.saveTasks(tasks.getTasks()); // ✅ Ensures tasks save properly
+                        storage.saveTasks(tasks.getTasks());
                         return "Task marked as done: " + task;
                     } catch (Exception e) {
                         return "Error: " + e.getMessage();
@@ -90,6 +100,7 @@ public class Command {
                     if (parts.length < 2) return "Task number is required for 'delete' command.";
                     try {
                         int index = Integer.parseInt(parts[1]) - 1;
+                        assert index >= 0 && index < tasks.size() : "Invalid task index for deletion";
                         Task removed = tasks.removeTask(index);
                         storage.saveTasks(tasks.getTasks());
                         return "Removed: " + removed;
@@ -98,19 +109,22 @@ public class Command {
                     }
                 }, false);
 
+
             case "todo":
                 return new Command(() -> {
-                    if (parts.length < 2) return "Description is required for 'todo' command.";
+                    assert parts.length >= 2 : "Todo description should be provided";
                     Task task = new ToDo(parts[1]);
                     tasks.addTask(task);
                     storage.saveTasks(tasks.getTasks());
                     return "Added: " + task;
                 }, false);
 
+
             case "deadline":
                 return new Command(() -> {
-                    if (parts.length < 2 || !parts[1].contains("/by")) return "Use 'deadline description /by dueDate'.";
+                    assert parts.length >= 2 && parts[1].contains("/by") : "Deadline format should be 'description /by dueDate'";
                     String[] deadlineParts = parts[1].split(" /by ", 2);
+                    assert deadlineParts.length == 2 : "Invalid deadline format";
                     Task task = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
                     tasks.addTask(task);
                     storage.saveTasks(tasks.getTasks());
