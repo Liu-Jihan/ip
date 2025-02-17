@@ -22,7 +22,7 @@ public class MainWindow extends AnchorPane {
     private Button sendButton;
 
     private OscarL oscar;
-    private Ui ui = new Ui(); // ✅ Create a default Ui instance
+    private Ui ui = new Ui(); 
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/teddy.png"));
     private Image oscarImage = new Image(this.getClass().getResourceAsStream("/images/iu.png"));
@@ -31,7 +31,6 @@ public class MainWindow extends AnchorPane {
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
 
-        // ✅ Always display the welcome message immediately on startup
         dialogContainer.getChildren().add(
                 DialogBox.getOscarDialog(ui.getWelcomeMessage(), oscarImage)
         );
