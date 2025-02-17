@@ -48,7 +48,8 @@ application {
 }
 
 shadowJar {
-    archiveFileName = 'OscarL.jar'
+    archiveBaseName = "duke"
+    archiveClassifier = null
 }
 
 run{
