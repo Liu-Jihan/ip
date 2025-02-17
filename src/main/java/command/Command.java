@@ -7,6 +7,7 @@ import task.Event;
 import task.Task;
 import task.TaskList;
 import task.ToDo;
+import places.Places;
 import ui.Ui;
 
 import java.util.function.Supplier;
@@ -45,7 +46,7 @@ public class Command {
         return isExit;
     }
 
-    public static Command parse(String input, TaskList tasks, Ui ui, Storage storage) throws OscarLException {
+    public static Command parse(String input, TaskList tasks,Places places, Ui ui, Storage storage) throws OscarLException {
         assert input != null : "Input cannot be null";
         assert !input.trim().isEmpty() : "Input cannot be empty";
 
@@ -67,11 +68,41 @@ public class Command {
                 return createTodoCommand(parts, tasks, storage);
             case "deadline":
                 return createDeadlineCommand(parts, tasks, storage);
+            case "addplace":
+                return createAddPlaceCommand(parts, places);
             case "event":
                 return createEventCommand(parts, tasks, storage);
+            case "listplaces":
+                return createListPlacesCommand(places);
+            case "removeplace":
+                return createRemovePlaceCommand(parts, places);
             default:
                 throw new OscarLException("Unknown command!");
         }
+    }
+
+    private static Command createRemovePlaceCommand(String[] parts, Places places) {
+        return new Command(() -> {
+            try {
+                if (parts.length < 2) return "Please provide a place index.";
+                int index = Integer.parseInt(parts[1]) - 1;
+                String removed = places.removePlace(index);
+                return "Removed place: " + removed;
+            } catch (NumberFormatException e) {
+                return "Invalid place index!";
+            } catch (IndexOutOfBoundsException e) {
+                return "Place index out of range!";
+            }
+        }, false);
+    }
+
+
+    private static Command createAddPlaceCommand(String[] parts, Places places) {
+        return new Command(() -> {
+            if (parts.length < 2) return "Please provide a place name.";
+            places.addPlace(parts[1]);
+            return "Added place: " + parts[1];
+        }, false);
     }
     private static Command createByeCommand() {
         return new Command(() -> "Bye. Hope to see you again soon!", true);
@@ -80,6 +111,10 @@ public class Command {
     private static Command createListCommand(TaskList tasks) {
         return new Command(() -> "Here are your tasks:\n" + tasks.listTasks(), false);
     }
+    private static Command createListPlacesCommand(Places places) {
+        return new Command(places::listPlaces, false);
+    }
+
 
     private static Command createMarkCommand(String[] parts, TaskList tasks, Storage storage) {
         return new Command(() -> {

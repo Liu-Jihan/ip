@@ -3,6 +3,7 @@ package oscarl;
 import command.Command;
 import storage.Storage;
 import task.TaskList;
+import places.Places;
 import ui.Ui;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class OscarL {
     private final Storage storage;
     private final TaskList tasks;
+    private final Places places;
     private final Ui ui;
 
     /**
@@ -24,7 +26,8 @@ public class OscarL {
     public OscarL(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
-        this.tasks = new TaskList(new ArrayList<>(storage.loadTasks())); // ✅ Correctly loads tasks from file
+        this.tasks = new TaskList(new ArrayList<>(storage.loadTasks()));
+        this.places = new Places();
     }
 
     /**
@@ -56,11 +59,15 @@ public class OscarL {
      */
     public String getResponse(String input) {
         try {
-            Command command = Command.parse(input, tasks, ui, storage);
+            Command command = Command.parse(input, tasks, places, ui, storage); // ✅ Correct order
             return command.execute(); // ✅ Returns response instead of printing
         } catch (OscarLException e) {
             return "Error: " + e.getMessage();
         }
+    }
+
+    public Places getPlaces() {
+        return places;
     }
 
 }
