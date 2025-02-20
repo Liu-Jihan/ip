@@ -15,7 +15,20 @@ public class Ui {
      * @return The welcome message string.
      */
     public String getWelcomeMessage() {
-        return "Hello! I'm OscarL.\nWhat can I do for you?\n";
+        return "Hello! I'm OscarL.\n" +
+                "What can I do for you?\n\n" +
+                "Available commands:\n" +
+                "  bye - Exit the program\n" +
+                "  list - Show all tasks\n" +
+                "  mark <index> - Mark a task as done\n" +
+                "  unmark <index> - Unmark a completed task\n" +
+                "  delete <index> - Delete a task\n" +
+                "  todo <description> - Add a to-do task\n" +
+                "  deadline <description> /by <date> - Add a deadline task\n" +
+                "  event <description> /from <start> /to <end> - Add an event task\n" +
+                "  addplace <place name> - Add a place\n" +
+                "  listplaces - List all saved places\n" +
+                "  removeplace <index> - Remove a saved place by index\n";
     }
 
     /**
