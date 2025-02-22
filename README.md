@@ -15,10 +15,11 @@
 3. **Start adding your tasks** 📝  
 4. **Watch OscarL handle your life like a pro!** 🎩✨  
 
+
 ## 🏆 Key Features  
-- ✅ **Smart task management** – no more chaos!  
-- ⏳ *Deadline tracking* **(Coming soon ⏳)**  
-- 🔔 *Reminders to keep you on track* **(Coming soon 🔔)**  
+- [x]  ✅ **Smart task management** – no more chaos!  
+- [ ] ⏳ *Deadline tracking* **(Coming soon ⏳)**  
+- [ ] 🔔 *Reminders to keep you on track* **(Coming soon 🔔)**  
 
 ## 👨‍💻 Developers, Rejoice!  
 OscarL is built for **everyone**, but if you're a Java enthusiast, you can even tweak it to your liking!  
