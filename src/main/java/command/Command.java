@@ -182,7 +182,15 @@ public class Command {
             return "Added: " + task;
         }, false);
     }
-
+    /**
+     * Creates a command to add a deadline task.
+     *
+     * @param parts   The command input split into parts.
+     * @param tasks   The TaskList containing the tasks.
+     * @param storage The Storage object for saving tasks.
+     * @return A Command object that adds a deadline task when executed.
+     */
+    
     private static Command createEventCommand(String[] parts, TaskList tasks, Storage storage) {
         return new Command(() -> {
             if (parts.length < 2 || !parts[1].contains("/from") || !parts[1].contains("/to"))
