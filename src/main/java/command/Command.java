@@ -146,6 +146,14 @@ public class Command {
         }, false);
     }
 
+    /**
+     * Creates a command to mark a task as not completed.
+     *
+     * @param parts   The command input split into parts.
+     * @param tasks   The TaskList containing the tasks.
+     * @param storage The Storage object for saving tasks.
+     * @return A Command object that marks a task as not done when executed.
+     */
     private static Command createDeleteCommand(String[] parts, TaskList tasks, Storage storage) {
         return new Command(() -> {
             if (parts.length < 2) return "Task number is required for 'delete' command.";
