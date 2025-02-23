@@ -161,6 +161,15 @@ public class Command {
         }, false);
     }
 
+    /**
+     * Creates a command to delete a task.
+     *
+     * @param parts   The command input split into parts.
+     * @param tasks   The TaskList containing the tasks.
+     * @param storage The Storage object for saving tasks.
+     * @return A Command object that deletes a task when executed.
+     */
+
     private static Command createTodoCommand(String[] parts, TaskList tasks, Storage storage) {
         return new Command(() -> {
             if (parts.length < 2) return "Description is required for 'todo' command.";
@@ -179,7 +188,7 @@ public class Command {
      * @param storage The Storage object for saving tasks.
      * @return A Command object that adds a to-do task when executed.
      */
-    
+
     private static Command createDeadlineCommand(String[] parts, TaskList tasks, Storage storage) {
         return new Command(() -> {
             if (parts.length < 2 || !parts[1].contains("/by")) return "Use 'deadline description /by dd/mm/yyyy 00:00'.";
