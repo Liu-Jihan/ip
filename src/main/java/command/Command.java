@@ -186,7 +186,7 @@ public class Command {
     private static Command createEventCommand(String[] parts, TaskList tasks, Storage storage) {
         return new Command(() -> {
             if (parts.length < 2 || !parts[1].contains("/from") || !parts[1].contains("/to"))
-                return "Use 'event description /from start /to end'.";
+                return "Use 'event description /from dd/mm/yyyy  /to end'.";
             String[] eventParts = parts[1].split(" /from | /to ", 3);
             assert eventParts.length == 3 : "Invalid event format";
             Task task = new Event(eventParts[0].trim(), eventParts[1].trim(), eventParts[2].trim());
