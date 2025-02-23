@@ -173,7 +173,7 @@ public class Command {
 
     private static Command createDeadlineCommand(String[] parts, TaskList tasks, Storage storage) {
         return new Command(() -> {
-            if (parts.length < 2 || !parts[1].contains("/by")) return "Use 'deadline description /by dueDate'.";
+            if (parts.length < 2 || !parts[1].contains("/by")) return "Use 'deadline description /by dd/mm/yyyy 00:00'.";
             String[] deadlineParts = parts[1].split(" /by ", 2);
             assert deadlineParts.length == 2 : "Invalid deadline format";
             Task task = new Deadline(deadlineParts[0].trim(), deadlineParts[1].trim());
