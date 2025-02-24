@@ -4,7 +4,7 @@ Here's a well-structured and polished version of your user guide:
 
 # OscarL User Guide
 
-![OscarL Interface](docs/Ui.png)
+![OscarL Interface](file:///D:/CS2103T%20Git/IP/docs/Ui.png)
 
 ## Introduction
 
